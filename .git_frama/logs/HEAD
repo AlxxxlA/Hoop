@@ -1,4 +1,0 @@
-0000000000000000000000000000000000000000 2cb490287944a2c10bf9ca21f6cb48b7b2f0734d alexandre.jauneau <alex@gandi.net> 1482369025 +0100	commit (initial): git init
-2cb490287944a2c10bf9ca21f6cb48b7b2f0734d a875cfd794a52da174c38f057c9555a798bb30c8 alexandre.jauneau <alex@gandi.net> 1482369463 +0100	commit: add requirements.txt
-a875cfd794a52da174c38f057c9555a798bb30c8 c6e5087409c0eaef898a6fd4f46f3349e83d38e2 alexandre.jauneau <alex@gandi.net> 1482372132 +0100	commit: same files place as the packages config
-c6e5087409c0eaef898a6fd4f46f3349e83d38e2 924b6df05366f69db4999797b56a29b14a5f5c98 alexandre.jauneau <alex@gandi.net> 1482379696 +0100	commit: install hoop
