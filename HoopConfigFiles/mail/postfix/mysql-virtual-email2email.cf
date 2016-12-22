@@ -1,0 +1,5 @@
+user = hoop
+password = DB_PASSWORD
+hosts = 127.0.0.1
+dbname = hoop
+query = SELECT email FROM mail_mailboxes WHERE email='%s'
