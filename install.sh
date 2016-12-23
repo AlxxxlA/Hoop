@@ -53,14 +53,12 @@ DEBIAN_FRONTEND=noninteractive apt update
 # generate a random root password for the root database user
 root_password=$(mkpasswd -s "")
 hoop_password=$(mkpasswd -s "")
-echo "root_password: $root_password" > config.yaml
-echo "hoop_password: $hoop_password" >> config.yaml
 
 sudo debconf-set-selections <<< "mariadb-server10.1 mysql-server/root_password password $root_password"
 sudo debconf-set-selections <<< "mariadb-server10.1 mysql-server/root_password_again password $root_password"
 
-DEBIAN_FRONTEND=noninteractive apt install -q -q -y python python2.7 python3 python3.4 python-pip git-core zlib1g-dev \
-  python-imaging libjpeg-dev python-dev mysql-client mariadb-server ufw
+DEBIAN_FRONTEND=noninteractive apt-get install -q -q -y python python2.7 python3 python3.4  libmysqlclient-dev python-pip git-core zlib1g-dev \
+  python-imaging libjpeg-dev python-dev mysql-client mariadb-server ufw libssl-dev
 
 pip install virtualenv virtualenvwrapper
 
@@ -75,18 +73,21 @@ echo 'Creating a new user for the web Interface'
 
 # create user hoop
 adduser --disabled-password --gecos --quiet hoop
+echo "root_password: $root_password" > /home/hoop/config.yaml
+echo "hoop_password: $hoop_password" >> /home/hoop/config.yaml
 ## switch on hoop user
 su - hoop << EOF
 mkdir /home/hoop/.virtualenv
 pip install --user virtualenv virtualenvwrapper
-cd /home/hoop && git clone https://framagit.org/Archerfou/Hoop.git
 python -m virtualenv /home/hoop/.virtualenv/hoop
 source /home/hoop/.virtualenv/hoop/bin/activate
+cd /home/hoop && git clone https://github.com/AlxxxlA/Hoop.git
 pip install -r /home/hoop/Hoop/requirements.txt
-python /home/hoop/Hoop/HoopInterface/manage.py makemigrations
-python /home/hoop/Hoop/HoopInterface/manage.py migrate
 echo "export WORKON_HOME=/home/hoop/.virtualenv" >> /home/hoop/.bashrc
 echo "source /usr/local/bin/virtualenvwrapper.sh" >> /home/hoop/.bashrc
+sed -i "s/DB_password/$hoop_password/" /home/hoop/Hoop/HoopInterface/HoopInterface/settings.py
+python /home/hoop/Hoop/HoopInterface/manage.py makemigrations
+python /home/hoop/Hoop/HoopInterface/manage.py migrate
 EOF
 
 # create vmail user and group for mailboxes
